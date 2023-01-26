@@ -1,0 +1,31 @@
+service: api
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: ap-south-1
+  memorySize: 128
+  logRetentionInDays: 7
+  logs:
+    http: true
+
+custom:
+  stage: ${opt:stage, 'dev'}
+  serverless-offline:
+    httpPort: 4000
+
+plugins:
+  - serverless-jetpack
+  - serverless-offline
+
+functions:
+  main:
+    handler: handler.main
+    events:
+      - http:
+          path: /hello
+          method: get
+      - http:
+          path: /hello/{id}
+          method: post
